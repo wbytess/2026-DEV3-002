@@ -13,6 +13,7 @@ import com.bnp.books.domain.BookPriceCalculator;
 import com.bnp.books.domain.model.Book;
 
 public class BooksPriceCalculatorTest {
+	private static final Double PRICE_50 = 50.0;
 	BookPriceCalculator priceCalculator;
 
 	@BeforeEach
@@ -29,45 +30,45 @@ public class BooksPriceCalculatorTest {
 	
 	@Test
 	void should_return_base_price_for_single_book() {
-		List<Book> books = Collections.singletonList(new Book("CLEAN_CODE", 50));
+		List<Book> books = Collections.singletonList(new Book("CLEAN_CODE", PRICE_50));
 
 		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(50);
 	}
 	
 	@Test
 	void should_return_sum_of_price_for_2_similar_books() {
-		List<Book> books = List.of(new Book("CLEAN_CODE", 50), new Book("CLEAN_CODE", 50));
+		List<Book> books = List.of(new Book("CLEAN_CODE", PRICE_50), new Book("CLEAN_CODE", PRICE_50));
 
 		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(100.0);
 	}
 	
 	@Test
 	void should_return_price_with_5_percent_discount_for_2_differnt_books() {
-		List<Book> books = List.of(new Book("CLEAN_CODE", 50), new Book("CLEAN_CODER", 50));
+		List<Book> books = List.of(new Book("CLEAN_CODE", PRICE_50), new Book("CLEAN_CODER", PRICE_50));
 
 		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(95.0);
 	}
 	
 	@Test
 	void should_return_price_with_10_percent_discount_for_3_differnt_books() {
-		List<Book> books = List.of(new Book("CLEAN_CODE", 50), new Book("CLEAN_CODER", 50),
-				new Book("CLEAN_ARCHITECTURE", 50));
+		List<Book> books = List.of(new Book("CLEAN_CODE", PRICE_50), new Book("CLEAN_CODER", PRICE_50),
+				new Book("CLEAN_ARCHITECTURE", PRICE_50));
 
 		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(135);
 	}
 	
 	@Test
 	void should_return_price_with_20_percent_discount_for_4_differnt_books() {
-		List<Book> books = List.of(new Book("CLEAN_CODE", 50), new Book("CLEAN_CODER", 50),
-				new Book("CLEAN_ARCHITECTURE", 50), new Book("TDD_BY_EXAMPLE", 50));
+		List<Book> books = List.of(new Book("CLEAN_CODE", PRICE_50), new Book("CLEAN_CODER", PRICE_50),
+				new Book("CLEAN_ARCHITECTURE", PRICE_50), new Book("TDD_BY_EXAMPLE", PRICE_50));
 
 		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(160);
 	}
 	
 	@Test
 	void should_return_price_with_25_percent_discount_for_5_differnt_books() {
-		List<Book> books = List.of(new Book("CLEAN_CODE", 50), new Book("CLEAN_CODER", 50),
-				new Book("CLEAN_ARCHITECTURE", 50), new Book("TDD_BY_EXAMPLE", 50), new Book("LEGACY_CODE", 50));
+		List<Book> books = List.of(new Book("CLEAN_CODE", PRICE_50), new Book("CLEAN_CODER", PRICE_50),
+				new Book("CLEAN_ARCHITECTURE", PRICE_50), new Book("TDD_BY_EXAMPLE", PRICE_50), new Book("LEGACY_CODE", PRICE_50));
 
 		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(187.50);
 	}
@@ -75,11 +76,11 @@ public class BooksPriceCalculatorTest {
 	@Test
 	void should_return_price_with_best_price_for_differnt_and_similar_books() {
 		List<Book> books = List.of(
-				new Book("CLEAN_CODE", 50), new Book("CLEAN_CODE", 50), 
-				new Book("CLEAN_CODER", 50), new Book("CLEAN_CODER", 50),
-				new Book("CLEAN_ARCHITECTURE", 50), new Book("CLEAN_ARCHITECTURE", 50), 
-				new Book("TDD_BY_EXAMPLE", 50), 
-				new Book("LEGACY_CODE", 50));
+				new Book("CLEAN_CODE", PRICE_50), new Book("CLEAN_CODE", PRICE_50), 
+				new Book("CLEAN_CODER", PRICE_50), new Book("CLEAN_CODER", PRICE_50),
+				new Book("CLEAN_ARCHITECTURE", PRICE_50), new Book("CLEAN_ARCHITECTURE", PRICE_50), 
+				new Book("TDD_BY_EXAMPLE", PRICE_50), 
+				new Book("LEGACY_CODE", PRICE_50));
 
 		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(320);
 	}
@@ -89,11 +90,11 @@ public class BooksPriceCalculatorTest {
 	void should_create_multiple_groups_for_list_containing_similar_books()
 	{
 		List<Book> books = List.of(
-				new Book("CLEAN_CODE", 50), new Book("CLEAN_CODE", 50), 
-				new Book("CLEAN_CODER", 50), new Book("CLEAN_CODER", 50),
-				new Book("CLEAN_ARCHITECTURE", 50), new Book("CLEAN_ARCHITECTURE", 50), 
-				new Book("TDD_BY_EXAMPLE", 50), 
-				new Book("LEGACY_CODE", 50));
+				new Book("CLEAN_CODE", PRICE_50), new Book("CLEAN_CODE", PRICE_50), 
+				new Book("CLEAN_CODER", PRICE_50), new Book("CLEAN_CODER", PRICE_50),
+				new Book("CLEAN_ARCHITECTURE", PRICE_50), new Book("CLEAN_ARCHITECTURE", PRICE_50), 
+				new Book("TDD_BY_EXAMPLE", PRICE_50), 
+				new Book("LEGACY_CODE", PRICE_50));
 		
 		
 		List<List<Book>> groups = priceCalculator.reArrangeBooksListToCalculateBestPrice(books);
@@ -113,11 +114,11 @@ public class BooksPriceCalculatorTest {
 	void should_create_3_groups_for_list_containing_similar_books()
 	{
 		List<Book> books = List.of(
-				new Book("CLEAN_CODE", 50), new Book("CLEAN_CODE", 50),new Book("CLEAN_CODE", 50), 
-				new Book("CLEAN_CODER", 50), new Book("CLEAN_CODER", 50),new Book("CLEAN_CODER", 50),
-				new Book("CLEAN_ARCHITECTURE", 50), new Book("CLEAN_ARCHITECTURE", 50),new Book("CLEAN_ARCHITECTURE", 50), 
-				new Book("TDD_BY_EXAMPLE", 50), 
-				new Book("LEGACY_CODE", 50));
+				new Book("CLEAN_CODE", PRICE_50), new Book("CLEAN_CODE", PRICE_50),new Book("CLEAN_CODE", PRICE_50), 
+				new Book("CLEAN_CODER", PRICE_50), new Book("CLEAN_CODER", PRICE_50),new Book("CLEAN_CODER", PRICE_50),
+				new Book("CLEAN_ARCHITECTURE", PRICE_50), new Book("CLEAN_ARCHITECTURE", PRICE_50),new Book("CLEAN_ARCHITECTURE", PRICE_50), 
+				new Book("TDD_BY_EXAMPLE", PRICE_50), 
+				new Book("LEGACY_CODE", PRICE_50));
 		
 		
 		List<List<Book>> groups = priceCalculator.reArrangeBooksListToCalculateBestPrice(books);
@@ -136,18 +137,18 @@ public class BooksPriceCalculatorTest {
 		List<List<Book>> groups = new ArrayList<>();
 		// group of 5
 		List<Book> group1 =  new ArrayList<>();
-				group1.add(new Book("CLEAN_CODE", 50)) ;
-				group1.add(new  Book("CLEAN_CODER", 50));
-				group1.add(new Book("CLEAN_ARCHITECTURE", 50));
-				group1.add(new Book("TDD_BY_EXAMPLE", 50));
-				group1.add(new Book("LEGACY_CODE", 50));
+				group1.add(new Book("CLEAN_CODE", PRICE_50)) ;
+				group1.add(new  Book("CLEAN_CODER", PRICE_50));
+				group1.add(new Book("CLEAN_ARCHITECTURE", PRICE_50));
+				group1.add(new Book("TDD_BY_EXAMPLE", PRICE_50));
+				group1.add(new Book("LEGACY_CODE", PRICE_50));
 		
 		
 		// group of 3
 				List<Book> group2 =  new ArrayList<>();
-				group2.add(new Book("CLEAN_CODE", 50)) ;
-				group2.add(new  Book("CLEAN_CODER", 50));
-				group2.add(new Book("CLEAN_ARCHITECTURE", 50));
+				group2.add(new Book("CLEAN_CODE", PRICE_50)) ;
+				group2.add(new  Book("CLEAN_CODER", PRICE_50));
+				group2.add(new Book("CLEAN_ARCHITECTURE", PRICE_50));
 			
 				
 		groups.add(group1);
@@ -170,17 +171,17 @@ public class BooksPriceCalculatorTest {
 		List<List<Book>> groups = new ArrayList<>();
 		// group of 5
 		List<Book> group1 =  new ArrayList<>();
-				group1.add(new Book("CLEAN_CODE", 50)) ;
-				group1.add(new  Book("CLEAN_CODER", 50));
-				group1.add(new Book("CLEAN_ARCHITECTURE", 50));
-				group1.add(new Book("TDD_BY_EXAMPLE", 50));
-				group1.add(new Book("LEGACY_CODE", 50));
+				group1.add(new Book("CLEAN_CODE", PRICE_50)) ;
+				group1.add(new  Book("CLEAN_CODER", PRICE_50));
+				group1.add(new Book("CLEAN_ARCHITECTURE", PRICE_50));
+				group1.add(new Book("TDD_BY_EXAMPLE", PRICE_50));
+				group1.add(new Book("LEGACY_CODE", PRICE_50));
 		
 		
 		// group of 3
 				List<Book> group2 =  new ArrayList<>();
-				group2.add(new Book("CLEAN_CODE", 50)) ;
-				group2.add(new  Book("CLEAN_CODER", 50));
+				group2.add(new Book("CLEAN_CODE", PRICE_50)) ;
+				group2.add(new  Book("CLEAN_CODER", PRICE_50));
 			
 				
 		groups.add(group1);
@@ -203,23 +204,23 @@ public class BooksPriceCalculatorTest {
 		List<List<Book>> groups = new ArrayList<>();
 		// group of 5
 		List<Book> group1 =  new ArrayList<>();
-				group1.add(new Book("CLEAN_CODE", 50)) ;
-				group1.add(new  Book("CLEAN_CODER", 50));
-				group1.add(new Book("CLEAN_ARCHITECTURE", 50));
-				group1.add(new Book("TDD_BY_EXAMPLE", 50));
-				group1.add(new Book("LEGACY_CODE", 50));
+				group1.add(new Book("CLEAN_CODE", PRICE_50)) ;
+				group1.add(new  Book("CLEAN_CODER", PRICE_50));
+				group1.add(new Book("CLEAN_ARCHITECTURE", PRICE_50));
+				group1.add(new Book("TDD_BY_EXAMPLE", PRICE_50));
+				group1.add(new Book("LEGACY_CODE", PRICE_50));
 		
 		
 		// group of 3
 				List<Book> group2 =  new ArrayList<>();
-				group2.add(new Book("CLEAN_CODE", 50)) ;
-				group2.add(new  Book("CLEAN_CODER", 50));
-				group2.add(new Book("CLEAN_ARCHITECTURE", 50));
+				group2.add(new Book("CLEAN_CODE", PRICE_50)) ;
+				group2.add(new  Book("CLEAN_CODER", PRICE_50));
+				group2.add(new Book("CLEAN_ARCHITECTURE", PRICE_50));
 				
 				List<Book> group3 =  new ArrayList<>();
-				group3.add(new Book("CLEAN_CODE", 50)) ;
-				group3.add(new  Book("CLEAN_CODER", 50));
-				group3.add(new Book("CLEAN_ARCHITECTURE", 50));
+				group3.add(new Book("CLEAN_CODE", PRICE_50)) ;
+				group3.add(new  Book("CLEAN_CODER", PRICE_50));
+				group3.add(new Book("CLEAN_ARCHITECTURE", PRICE_50));
 			
 				
 		groups.add(group1);

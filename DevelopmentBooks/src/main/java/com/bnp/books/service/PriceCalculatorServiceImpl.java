@@ -21,6 +21,13 @@ public class PriceCalculatorServiceImpl implements PriceCalculatorService {
 		if (books == null || books.isEmpty()) {
 	        throw new IllegalArgumentException("Book list cannot be empty");
 	    }
+		
+		// Validate each book
+        books.forEach(book -> {
+            if (book.price() == null) {
+                throw new IllegalArgumentException("Book price must not be null: " + book.name());
+            }
+        });
 	    return bookPriceCalculator.caluclatePriceFor(books);
 	}
 

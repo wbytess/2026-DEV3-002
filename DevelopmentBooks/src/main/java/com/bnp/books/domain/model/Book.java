@@ -2,7 +2,7 @@ package com.bnp.books.domain.model;
 
 import java.util.Objects;
 
-public record Book(String name, double price) {
+public record Book(String name, Double price) {
 
 	@Override
 	public int hashCode() {

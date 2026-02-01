@@ -14,9 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class PriceControllerTest {
-	
+
 	@Autowired
-    private MockMvc mockMvc;
+	private MockMvc mockMvc;
 
 	@Test
 	@DisplayName("price of a single book should be 50")
@@ -30,5 +30,20 @@ public class PriceControllerTest {
 
 		mockMvc.perform(post("/api/v1/price").contentType(MediaType.APPLICATION_JSON).content(requestBody))
 				.andExpect(status().isOk()).andExpect(content().string("50.0"));
+	}
+
+	@Test
+	@DisplayName("two different books get 5 percent discount")
+	void twoDifferentBooksGet5PercentDiscount() throws Exception {
+
+		String requestBody = """
+				[
+				  { "name": "CLEAN_CODE", "price": 50 },
+				  { "name": "CLEAN_CODER", "price": 50 }
+				]
+				""";
+
+		mockMvc.perform(post("/api/v1/price").contentType(MediaType.APPLICATION_JSON).content(requestBody))
+				.andExpect(status().isOk()).andExpect(content().string("95.0"));
 	}
 }

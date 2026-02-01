@@ -62,6 +62,22 @@ public class PriceControllerTest {
 		assertPrice(requestBody, "135.0");
 	}
 	
+	@Test
+	@DisplayName("four different books get 20 percent discount")
+	void fourDifferentBooksGet20PercentDiscount() throws Exception {
+
+		String requestBody = """
+				[
+				  { "name": "CLEAN_CODE", "price": 50 },
+				  { "name": "CLEAN_CODER", "price": 50 },
+				  { "name": "CLEAN_ARCHITECTURE", "price": 50 },
+				  { "name": "TDD_BY_EXAMPLE", "price": 50 }
+				]
+				""";
+
+		assertPrice(requestBody, "160.0");
+	}
+	
 	private void assertPrice(String requestBody, String price) throws Exception {
 		mockMvc.perform(post(API_V1_PRICE).contentType(MediaType.APPLICATION_JSON).content(requestBody))
 				.andExpect(status().isOk()).andExpect(content().string(price));

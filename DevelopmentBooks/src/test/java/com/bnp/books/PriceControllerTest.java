@@ -2,6 +2,7 @@ package com.bnp.books;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
@@ -112,6 +113,19 @@ public class PriceControllerTest {
 
 		assertPrice(requestBody, "320.0");
 	}
+	
+	@Test
+	@DisplayName("empty book list should return 400")
+	void emptyBookListReturnsBadRequest() throws Exception {
+	    String requestBody = "[]";
+
+	    mockMvc.perform(get("/api/v1/price")
+	                    .contentType(MediaType.APPLICATION_JSON)
+	                    .content(requestBody))
+	            .andExpect(status().isBadRequest())
+	            .andExpect(jsonPath("$.message").value("Book list cannot be empty"));
+	}
+
 	
 	private void assertPrice(String requestBody, String price) throws Exception {
 		mockMvc.perform(get(API_V1_PRICE).contentType(MediaType.APPLICATION_JSON).content(requestBody))

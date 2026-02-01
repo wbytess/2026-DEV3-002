@@ -1,7 +1,8 @@
 package com.bnp.books;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -113,7 +114,7 @@ public class PriceControllerTest {
 	}
 	
 	private void assertPrice(String requestBody, String price) throws Exception {
-		mockMvc.perform(post(API_V1_PRICE).contentType(MediaType.APPLICATION_JSON).content(requestBody))
+		mockMvc.perform(get(API_V1_PRICE).contentType(MediaType.APPLICATION_JSON).content(requestBody))
 				.andExpect(status().isOk()).andExpect(content().string(price));
 	}
 }

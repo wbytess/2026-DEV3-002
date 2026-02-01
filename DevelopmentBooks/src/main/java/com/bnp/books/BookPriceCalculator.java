@@ -83,36 +83,25 @@ public class BookPriceCalculator {
 	            .toList();
 
 	    for (int i = 0; i < sizesDesc.size(); i++) {
-	        for (int j = sizesDesc.size() - 1; j > i; j--) {
+            for (int j = sizesDesc.size() - 1; j > i; j--) {
 
-	            int largerSize = sizesDesc.get(i);
-	            int smallerSize = sizesDesc.get(j);
+                int largerSize = sizesDesc.get(i);
+                int smallerSize = sizesDesc.get(j);
 
-	            // Only rebalance meaningful differences
-	            if (largerSize - smallerSize < 2) {
-	                continue;
-	            }
+                if (largerSize - smallerSize < 2) {
+                    continue;
+                }
 
-	            var largerGroups = groupsBySize.get(largerSize);
-	            var smallerGroups = groupsBySize.get(smallerSize);
+                var largerGroups = groupsBySize.get(largerSize);
+                var smallerGroups = groupsBySize.get(smallerSize);
 
-	            int pairs = Math.min(largerGroups.size(), smallerGroups.size());
+                int pairs = Math.min(largerGroups.size(), smallerGroups.size());
 
-	            for (int p = 0; p < pairs; p++) {
-	                if (rebalancePair(largerGroups.get(p), smallerGroups.get(p))) {
-
-	                    // Update group sizes after rebalance
-	                    groupsBySize
-	                            .computeIfAbsent(largerSize - 1, k -> new ArrayList<>())
-	                            .add(largerGroups.get(p));
-
-	                    groupsBySize
-	                            .computeIfAbsent(smallerSize + 1, k -> new ArrayList<>())
-	                            .add(smallerGroups.get(p));
-	                }
-	            }
-	        }
-	    }
+                for (int p = 0; p < pairs; p++) {
+                    rebalancePair(largerGroups.get(p), smallerGroups.get(p));
+                }
+            }
+        }
 	    return groups;
 	}
 

@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class BooksPriceCalculatorTest {
@@ -70,7 +69,6 @@ public class BooksPriceCalculatorTest {
 		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(187.50);
 	}
 	
-	@Disabled
 	@Test
 	void should_return_price_with_best_price_for_differnt_and_similar_books() {
 		List<Book> books = List.of(
@@ -168,7 +166,7 @@ public class BooksPriceCalculatorTest {
 		
 		List<List<Book>> groups = new ArrayList<>();
 		// group of 5
-		List<Book> group1 =  new ArrayList();
+		List<Book> group1 =  new ArrayList<>();
 				group1.add(new Book("CLEAN_CODE", 50)) ;
 				group1.add(new  Book("CLEAN_CODER", 50));
 				group1.add(new Book("CLEAN_ARCHITECTURE", 50));
@@ -177,7 +175,7 @@ public class BooksPriceCalculatorTest {
 		
 		
 		// group of 3
-				List<Book> group2 =  new ArrayList();
+				List<Book> group2 =  new ArrayList<>();
 				group2.add(new Book("CLEAN_CODE", 50)) ;
 				group2.add(new  Book("CLEAN_CODER", 50));
 			
@@ -201,7 +199,7 @@ public class BooksPriceCalculatorTest {
 		
 		List<List<Book>> groups = new ArrayList<>();
 		// group of 5
-		List<Book> group1 =  new ArrayList();
+		List<Book> group1 =  new ArrayList<>();
 				group1.add(new Book("CLEAN_CODE", 50)) ;
 				group1.add(new  Book("CLEAN_CODER", 50));
 				group1.add(new Book("CLEAN_ARCHITECTURE", 50));
@@ -210,12 +208,12 @@ public class BooksPriceCalculatorTest {
 		
 		
 		// group of 3
-				List<Book> group2 =  new ArrayList();
+				List<Book> group2 =  new ArrayList<>();
 				group2.add(new Book("CLEAN_CODE", 50)) ;
 				group2.add(new  Book("CLEAN_CODER", 50));
 				group2.add(new Book("CLEAN_ARCHITECTURE", 50));
 				
-				List<Book> group3 =  new ArrayList();
+				List<Book> group3 =  new ArrayList<>();
 				group3.add(new Book("CLEAN_CODE", 50)) ;
 				group3.add(new  Book("CLEAN_CODER", 50));
 				group3.add(new Book("CLEAN_ARCHITECTURE", 50));

@@ -38,7 +38,7 @@ public class BookPriceCalculator {
 				case 3 -> applyDiscount(getBooksPriceForGroup, DISCOUNT_10_PERCENT);
 				case 4 -> applyDiscount(getBooksPriceForGroup, DISCOUNT_20_PERCENT);
 				case 5 -> applyDiscount(getBooksPriceForGroup, DISCOUNT_25_PERCENT);
-				default -> calculateTotalPrice(books);
+				default -> getBooksPriceForGroup;
 				};
 			totalPrice += groupPrice; 
 			}

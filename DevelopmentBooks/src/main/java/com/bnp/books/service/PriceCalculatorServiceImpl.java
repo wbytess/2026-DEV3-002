@@ -18,7 +18,10 @@ public class PriceCalculatorServiceImpl implements PriceCalculatorService {
 
 	@Override
 	public double caluclatePriceForBooks(List<Book> books) {
-		return bookPriceCalculator.caluclatePriceFor(books);
+		if (books == null || books.isEmpty()) {
+	        throw new IllegalArgumentException("Book list cannot be empty");
+	    }
+	    return bookPriceCalculator.caluclatePriceFor(books);
 	}
 
 }

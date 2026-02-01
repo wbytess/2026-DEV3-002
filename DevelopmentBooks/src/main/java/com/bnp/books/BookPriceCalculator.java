@@ -14,6 +14,12 @@ public class BookPriceCalculator {
 
 			totalPrice = Double.valueOf(books.get(0).price());
 		}
+		
+		else {
+			 totalPrice = books.stream()
+			        .mapToDouble(Book::price)
+			        .sum();
+		}
 
 		return totalPrice;
 	}

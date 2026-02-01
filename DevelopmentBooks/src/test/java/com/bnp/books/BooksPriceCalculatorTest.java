@@ -30,4 +30,11 @@ public class BooksPriceCalculatorTest {
 		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(50);
 	}
 	
+	@Test
+	void should_return_sum_of_price_for_2_similar_books() {
+		List<Book> books = List.of(new Book("CLEAN_CODE",50),new Book("CLEAN_CODE",50));
+		
+		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(100.0);
+	}
+	
 }

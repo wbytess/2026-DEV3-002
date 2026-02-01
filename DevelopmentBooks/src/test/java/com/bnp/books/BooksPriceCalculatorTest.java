@@ -51,4 +51,12 @@ public class BooksPriceCalculatorTest {
 
 		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(135);
 	}
+	
+	@Test
+	void should_return_price_with_20_percent_discount_for_4_differnt_books() {
+		List<Book> books = List.of(new Book("CLEAN_CODE", 50), new Book("CLEAN_CODER", 50),
+				new Book("CLEAN_ARCHITECTURE", 50), new Book("TDD_BY_EXAMPLE", 50));
+
+		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(160);
+	}
 }

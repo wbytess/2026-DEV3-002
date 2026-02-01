@@ -6,15 +6,16 @@ public class BookPriceCalculator {
 
 	public double caluclatePriceFor(List<Book> books) {
 		double totalPrice = 0;
-		if(books.isEmpty()) {
+		if (books.isEmpty()) {
 			return totalPrice = Double.valueOf(0);
 		}
-		
-		if(books.size() == 1) {
-			totalPrice = Double.valueOf(50);
+
+		if (books.size() == 1) {
+
+			totalPrice = Double.valueOf(books.get(0).price());
 		}
-		
-	return totalPrice;
+
+		return totalPrice;
 	}
 
 }

@@ -24,19 +24,15 @@ public class BookPriceCalculator {
 		else {
 			List<Book> distinct = books.stream().distinct().collect(Collectors.toList());
 
-			if (distinct.size() > 1) {
-				if (distinct.size() == 2) {
-					totalPrice = applyDiscount(calculateTotalPrice(books), DISCOUNT_5_PERCENT);
-				}else if (distinct.size() == 3) {
-					totalPrice = applyDiscount(calculateTotalPrice(books), DISCOUNT_10_PERCENT);
-				}else if (distinct.size() == 4) {
-					totalPrice = applyDiscount(calculateTotalPrice(books), DISCOUNT_20_PERCENT);
-				}else if (distinct.size() == 5) {
-					totalPrice = applyDiscount(calculateTotalPrice(books), DISCOUNT_25_PERCENT);
-				}
-			} else {
-				totalPrice = calculateTotalPrice(books);
-			}
+			int distinctCount = distinct.size();
+
+			totalPrice = switch (distinctCount) {
+			case 2 -> applyDiscount(calculateTotalPrice(books), DISCOUNT_5_PERCENT);
+			case 3 -> applyDiscount(calculateTotalPrice(books), DISCOUNT_10_PERCENT);
+			case 4 -> applyDiscount(calculateTotalPrice(books), DISCOUNT_20_PERCENT);
+			case 5 -> applyDiscount(calculateTotalPrice(books), DISCOUNT_25_PERCENT);
+			default -> calculateTotalPrice(books);
+			};
 
 		}
 

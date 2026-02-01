@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 public class BookPriceCalculator {
 
 	private static final double DISCOUNT_5_PERCENT = 0.05;
+	private static final double DISCOUNT_10_PERCENT = 0.10;
 
 	public double caluclatePriceFor(List<Book> books) {
 		double totalPrice = 0;
@@ -24,6 +25,8 @@ public class BookPriceCalculator {
 			if (distinct.size() > 1) {
 				if (distinct.size() == 2) {
 					totalPrice = applyDiscount(calculateTotalPrice(books), DISCOUNT_5_PERCENT);
+				}else if (distinct.size() == 3) {
+					totalPrice = applyDiscount(calculateTotalPrice(books), DISCOUNT_10_PERCENT);
 				}
 			} else {
 				totalPrice = calculateTotalPrice(books);

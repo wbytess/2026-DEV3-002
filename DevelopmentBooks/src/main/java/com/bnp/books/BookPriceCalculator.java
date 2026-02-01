@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 public class BookPriceCalculator {
 
+	private static final double DISCOUNT_5_PERCENT = 0.05;
+
 	public double caluclatePriceFor(List<Book> books) {
 		double totalPrice = 0;
 		if (books.isEmpty()) {
@@ -15,25 +17,31 @@ public class BookPriceCalculator {
 
 			totalPrice = Double.valueOf(books.get(0).price());
 		}
-		
+
 		else {
 			List<Book> distinct = books.stream().distinct().collect(Collectors.toList());
-			
-			if(distinct.size() > 1) {
-				 if(distinct.size() == 2) {
-					 totalPrice = books.stream()
-						        .mapToDouble(Book::price)
-						        .sum(); 
-					 totalPrice = totalPrice * (1 - 0.05);
-				 }
-			}else {
-				totalPrice = books.stream()
-				        .mapToDouble(Book::price)
-				        .sum();
+
+			if (distinct.size() > 1) {
+				if (distinct.size() == 2) {
+					totalPrice = applyDiscount(calculateTotalPrice(books), DISCOUNT_5_PERCENT);
+				}
+			} else {
+				totalPrice = calculateTotalPrice(books);
 			}
-			 
+
 		}
 
+		return totalPrice;
+	}
+
+	private double applyDiscount(double totalPrice, double discount) {
+		totalPrice = totalPrice * (1 - discount);
+		return totalPrice;
+	}
+
+	private double calculateTotalPrice(List<Book> books) {
+		double totalPrice;
+		totalPrice = books.stream().mapToDouble(Book::price).sum();
 		return totalPrice;
 	}
 

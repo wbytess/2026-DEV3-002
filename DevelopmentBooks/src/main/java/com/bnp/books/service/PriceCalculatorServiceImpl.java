@@ -30,6 +30,9 @@ public class PriceCalculatorServiceImpl implements PriceCalculatorService {
             if (book.price() == null) {
                 throw new IllegalArgumentException("Book price must not be null: " + book.name());
             }
+            if (book.price() <= 0) {
+                throw new IllegalArgumentException("Book price must be greater than zero for book: " + book.name());
+            }
         });
 	    return bookPriceCalculator.caluclatePriceFor(books);
 	}

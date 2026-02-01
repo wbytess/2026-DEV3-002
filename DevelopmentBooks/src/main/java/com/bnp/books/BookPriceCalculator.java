@@ -1,6 +1,7 @@
 package com.bnp.books;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookPriceCalculator {
 
@@ -16,9 +17,21 @@ public class BookPriceCalculator {
 		}
 		
 		else {
-			 totalPrice = books.stream()
-			        .mapToDouble(Book::price)
-			        .sum();
+			List<Book> distinct = books.stream().distinct().collect(Collectors.toList());
+			
+			if(distinct.size() > 1) {
+				 if(distinct.size() == 2) {
+					 totalPrice = books.stream()
+						        .mapToDouble(Book::price)
+						        .sum(); 
+					 totalPrice = totalPrice * (1 - 0.05);
+				 }
+			}else {
+				totalPrice = books.stream()
+				        .mapToDouble(Book::price)
+				        .sum();
+			}
+			 
 		}
 
 		return totalPrice;

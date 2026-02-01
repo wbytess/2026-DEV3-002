@@ -24,6 +24,9 @@ public class PriceCalculatorServiceImpl implements PriceCalculatorService {
 		
 		// Validate each book
         books.forEach(book -> {
+        	if (book.name() == null || book.name().isBlank()) {
+                throw new IllegalArgumentException("Book name must not be null or empty");
+            }
             if (book.price() == null) {
                 throw new IllegalArgumentException("Book price must not be null: " + book.name());
             }

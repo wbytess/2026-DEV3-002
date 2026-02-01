@@ -143,6 +143,23 @@ public class PriceControllerTest {
                 .andExpect(jsonPath("$.message").value("Book price must not be null: CLEAN_CODE"));
     }
 	
+	@Test
+    @DisplayName("should return 400 BAD REQUEST when book name is null")
+    void shouldReturnBadRequestForBookWithNullName() throws Exception {
+
+        String invalidBookRequest = """
+                [
+                    { "name": null, "price": 50 }
+                ]
+                """;
+
+        mockMvc.perform(get("/api/v1/price")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidBookRequest))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Book name must not be null or empty"));
+    }
+	
 	private void assertPrice(String requestBody, String price) throws Exception {
 		mockMvc.perform(get(API_V1_PRICE).contentType(MediaType.APPLICATION_JSON).content(requestBody))
 				.andExpect(status().isOk()).andExpect(content().string(price));

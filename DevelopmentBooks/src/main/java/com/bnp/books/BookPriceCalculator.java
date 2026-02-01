@@ -8,6 +8,7 @@ public class BookPriceCalculator {
 	private static final double DISCOUNT_5_PERCENT = 0.05;
 	private static final double DISCOUNT_10_PERCENT = 0.10;
 	private static final double DISCOUNT_20_PERCENT = 0.20;
+	private static final double DISCOUNT_25_PERCENT = 0.25;
 
 	public double caluclatePriceFor(List<Book> books) {
 		double totalPrice = 0;
@@ -30,6 +31,8 @@ public class BookPriceCalculator {
 					totalPrice = applyDiscount(calculateTotalPrice(books), DISCOUNT_10_PERCENT);
 				}else if (distinct.size() == 4) {
 					totalPrice = applyDiscount(calculateTotalPrice(books), DISCOUNT_20_PERCENT);
+				}else if (distinct.size() == 5) {
+					totalPrice = applyDiscount(calculateTotalPrice(books), DISCOUNT_25_PERCENT);
 				}
 			} else {
 				totalPrice = calculateTotalPrice(books);

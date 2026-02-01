@@ -9,6 +9,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.bnp.books.domain.BookPriceCalculator;
+import com.bnp.books.domain.model.Book;
+
 public class BooksPriceCalculatorTest {
 	BookPriceCalculator priceCalculator;
 

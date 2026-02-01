@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.bnp.books.BookPriceCalculator;
+import com.bnp.books.domain.BookPriceCalculator;
+import com.bnp.books.domain.model.Book;
 
 @Service
 public class PriceCalculatorServiceImpl implements PriceCalculatorService {
@@ -16,10 +17,8 @@ public class PriceCalculatorServiceImpl implements PriceCalculatorService {
 	    }
 
 	@Override
-	public double caluclatePriceForBooks(List<com.bnp.books.Book> books) {
+	public double caluclatePriceForBooks(List<Book> books) {
 		return bookPriceCalculator.caluclatePriceFor(books);
 	}
-
-	
 
 }

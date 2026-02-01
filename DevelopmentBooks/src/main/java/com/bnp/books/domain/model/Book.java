@@ -1,4 +1,4 @@
-package com.bnp.books;
+package com.bnp.books.domain.model;
 
 import java.util.Objects;
 

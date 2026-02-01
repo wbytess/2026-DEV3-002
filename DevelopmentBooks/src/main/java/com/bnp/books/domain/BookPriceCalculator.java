@@ -1,4 +1,4 @@
-package com.bnp.books;
+package com.bnp.books.domain;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -8,9 +8,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Component;
+import com.bnp.books.domain.model.Book;
 
-@Component
 public class BookPriceCalculator {
 
 	private static final double DISCOUNT_5_PERCENT = 0.05;

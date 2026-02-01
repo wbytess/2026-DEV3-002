@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class BookPriceCalculator {
 
 	private static final double DISCOUNT_5_PERCENT = 0.05;

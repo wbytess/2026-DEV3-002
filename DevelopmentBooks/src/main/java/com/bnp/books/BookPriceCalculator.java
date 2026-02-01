@@ -1,6 +1,7 @@
 package com.bnp.books;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -65,9 +66,70 @@ public class BookPriceCalculator {
 			}
 			groups.add(singleGroup);
 		}
-		return groups;
+		return rebalanceGroups(groups);
+	}
+	
+	
+	public List<List<Book>> rebalanceGroups(List<List<Book>> groupsToBeRebalanced) {
+		List<List<Book>>  groups =  groupsToBeRebalanced;
+
+	    // Group by size (e.g. size -> list of groups)
+	    var groupsBySize = groups.stream()
+	            .collect(Collectors.groupingBy(List::size));
+
+	    // Sort sizes descending
+	    var sizesDesc = groupsBySize.keySet().stream()
+	            .sorted(Comparator.reverseOrder())
+	            .toList();
+
+	    for (int i = 0; i < sizesDesc.size(); i++) {
+	        for (int j = sizesDesc.size() - 1; j > i; j--) {
+
+	            int largerSize = sizesDesc.get(i);
+	            int smallerSize = sizesDesc.get(j);
+
+	            // Only rebalance meaningful differences
+	            if (largerSize - smallerSize < 2) {
+	                continue;
+	            }
+
+	            var largerGroups = groupsBySize.get(largerSize);
+	            var smallerGroups = groupsBySize.get(smallerSize);
+
+	            int pairs = Math.min(largerGroups.size(), smallerGroups.size());
+
+	            for (int p = 0; p < pairs; p++) {
+	                if (rebalancePair(largerGroups.get(p), smallerGroups.get(p))) {
+
+	                    // Update group sizes after rebalance
+	                    groupsBySize
+	                            .computeIfAbsent(largerSize - 1, k -> new ArrayList<>())
+	                            .add(largerGroups.get(p));
+
+	                    groupsBySize
+	                            .computeIfAbsent(smallerSize + 1, k -> new ArrayList<>())
+	                            .add(smallerGroups.get(p));
+	                }
+	            }
+	        }
+	    }
+	    return groups;
 	}
 
+	private boolean rebalancePair(List<Book> larger, List<Book> smaller) {
+	    for (var iterator = larger.iterator(); iterator.hasNext(); ) {
+	        var book = iterator.next();
+
+	        if (!smaller.contains(book)) {
+	            iterator.remove();
+	            smaller.add(book);
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+
+	
 	private double applyDiscount(double price, double discount) {
 		return price * (1 - discount);
 		

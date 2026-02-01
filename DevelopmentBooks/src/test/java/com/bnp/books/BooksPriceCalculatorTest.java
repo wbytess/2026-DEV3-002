@@ -2,6 +2,7 @@ package com.bnp.books;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class BooksPriceCalculatorTest {
 		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(187.50);
 	}
 	
-    @Disabled
+	@Disabled
 	@Test
 	void should_return_price_with_best_price_for_differnt_and_similar_books() {
 		List<Book> books = List.of(
@@ -81,6 +82,7 @@ public class BooksPriceCalculatorTest {
 
 		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(320);
 	}
+	
 	
 	@Test
 	void should_create_multiple_groups_for_list_containing_similar_books()
@@ -99,11 +101,135 @@ public class BooksPriceCalculatorTest {
 		assertThat(groups).hasSize(2);
 
 		assertThat(groups.get(0)).extracting(Book::name).contains("CLEAN_CODE", "CLEAN_CODER",
-				"CLEAN_ARCHITECTURE", "TDD_BY_EXAMPLE");
+				"CLEAN_ARCHITECTURE", "LEGACY_CODE");
 
 		assertThat(groups.get(1)).extracting(Book::name).contains("CLEAN_CODE", "CLEAN_CODER",
-				"CLEAN_ARCHITECTURE");
+				"CLEAN_ARCHITECTURE","TDD_BY_EXAMPLE");
 
+	}
+	
+	@Test
+	void should_create_3_groups_for_list_containing_similar_books()
+	{
+		List<Book> books = List.of(
+				new Book("CLEAN_CODE", 50), new Book("CLEAN_CODE", 50),new Book("CLEAN_CODE", 50), 
+				new Book("CLEAN_CODER", 50), new Book("CLEAN_CODER", 50),new Book("CLEAN_CODER", 50),
+				new Book("CLEAN_ARCHITECTURE", 50), new Book("CLEAN_ARCHITECTURE", 50),new Book("CLEAN_ARCHITECTURE", 50), 
+				new Book("TDD_BY_EXAMPLE", 50), 
+				new Book("LEGACY_CODE", 50));
+		
+		
+		List<List<Book>> groups = priceCalculator.reArrangeBooksListToCalculateBestPrice(books);
+		
+		
+		assertThat(groups).hasSize(3);
+		assertThat(groups.get(0)).hasSize(4);
+		assertThat(groups.get(1)).hasSize(4);
+		assertThat(groups.get(2)).hasSize(3);
+
+	}
+	
+	@Test
+	void  should_rebalance_groups_of_5_and_3_to_uniformly_distrbute_books() {
+		
+		List<List<Book>> groups = new ArrayList<>();
+		// group of 5
+		List<Book> group1 =  new ArrayList<>();
+				group1.add(new Book("CLEAN_CODE", 50)) ;
+				group1.add(new  Book("CLEAN_CODER", 50));
+				group1.add(new Book("CLEAN_ARCHITECTURE", 50));
+				group1.add(new Book("TDD_BY_EXAMPLE", 50));
+				group1.add(new Book("LEGACY_CODE", 50));
+		
+		
+		// group of 3
+				List<Book> group2 =  new ArrayList<>();
+				group2.add(new Book("CLEAN_CODE", 50)) ;
+				group2.add(new  Book("CLEAN_CODER", 50));
+				group2.add(new Book("CLEAN_ARCHITECTURE", 50));
+			
+				
+		groups.add(group1);
+		groups.add(group2);
+		
+		groups = priceCalculator.rebalanceGroups(groups);
+		assertThat(groups.get(0)).hasSize(4);
+		assertThat(groups.get(1)).hasSize(4);
+
+		assertThat(groups.get(0)).extracting(Book::name).contains("CLEAN_CODE", "CLEAN_CODER",
+				"CLEAN_ARCHITECTURE", "LEGACY_CODE");
+
+		assertThat(groups.get(1)).extracting(Book::name).contains("CLEAN_CODE", "CLEAN_CODER",
+				"CLEAN_ARCHITECTURE","TDD_BY_EXAMPLE");		
+	}
+	
+	@Test
+	void  should_rebalance_groups_5_and_2_to_uniformly_distrbute_books() {
+		
+		List<List<Book>> groups = new ArrayList<>();
+		// group of 5
+		List<Book> group1 =  new ArrayList();
+				group1.add(new Book("CLEAN_CODE", 50)) ;
+				group1.add(new  Book("CLEAN_CODER", 50));
+				group1.add(new Book("CLEAN_ARCHITECTURE", 50));
+				group1.add(new Book("TDD_BY_EXAMPLE", 50));
+				group1.add(new Book("LEGACY_CODE", 50));
+		
+		
+		// group of 3
+				List<Book> group2 =  new ArrayList();
+				group2.add(new Book("CLEAN_CODE", 50)) ;
+				group2.add(new  Book("CLEAN_CODER", 50));
+			
+				
+		groups.add(group1);
+		groups.add(group2);
+		
+		groups = priceCalculator.rebalanceGroups(groups);
+		assertThat(groups.get(0)).hasSize(4);
+		assertThat(groups.get(1)).hasSize(3);
+
+		assertThat(groups.get(0)).extracting(Book::name).contains("CLEAN_CODE", "CLEAN_CODER",
+				"TDD_BY_EXAMPLE", "LEGACY_CODE");
+
+		assertThat(groups.get(1)).extracting(Book::name).contains("CLEAN_CODE", "CLEAN_CODER",
+				"CLEAN_ARCHITECTURE");		
+	}
+	
+	@Test
+	void  should_rebalance_groups_of_5_3_and_3_to_uniformly_distrbute_books() {
+		
+		List<List<Book>> groups = new ArrayList<>();
+		// group of 5
+		List<Book> group1 =  new ArrayList();
+				group1.add(new Book("CLEAN_CODE", 50)) ;
+				group1.add(new  Book("CLEAN_CODER", 50));
+				group1.add(new Book("CLEAN_ARCHITECTURE", 50));
+				group1.add(new Book("TDD_BY_EXAMPLE", 50));
+				group1.add(new Book("LEGACY_CODE", 50));
+		
+		
+		// group of 3
+				List<Book> group2 =  new ArrayList();
+				group2.add(new Book("CLEAN_CODE", 50)) ;
+				group2.add(new  Book("CLEAN_CODER", 50));
+				group2.add(new Book("CLEAN_ARCHITECTURE", 50));
+				
+				List<Book> group3 =  new ArrayList();
+				group3.add(new Book("CLEAN_CODE", 50)) ;
+				group3.add(new  Book("CLEAN_CODER", 50));
+				group3.add(new Book("CLEAN_ARCHITECTURE", 50));
+			
+				
+		groups.add(group1);
+		groups.add(group2);
+		groups.add(group3);
+		
+		groups = priceCalculator.rebalanceGroups(groups);
+		assertThat(groups.get(0)).hasSize(4);
+		assertThat(groups.get(1)).hasSize(4);
+		assertThat(groups.get(2)).hasSize(3);
+	
 	}
 	
 }

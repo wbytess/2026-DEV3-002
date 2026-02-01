@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public class PriceControllerTest {
 
+	private static final String API_V1_PRICE = "/api/v1/price";
+	
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -28,8 +30,7 @@ public class PriceControllerTest {
 				]
 				""";
 
-		mockMvc.perform(post("/api/v1/price").contentType(MediaType.APPLICATION_JSON).content(requestBody))
-				.andExpect(status().isOk()).andExpect(content().string("50.0"));
+		assertPrice(requestBody, "50.0");
 	}
 
 	@Test
@@ -43,7 +44,11 @@ public class PriceControllerTest {
 				]
 				""";
 
-		mockMvc.perform(post("/api/v1/price").contentType(MediaType.APPLICATION_JSON).content(requestBody))
-				.andExpect(status().isOk()).andExpect(content().string("95.0"));
+		assertPrice(requestBody, "95.0");
+	}
+	
+	private void assertPrice(String requestBody, String price) throws Exception {
+		mockMvc.perform(post(API_V1_PRICE).contentType(MediaType.APPLICATION_JSON).content(requestBody))
+				.andExpect(status().isOk()).andExpect(content().string(price));
 	}
 }

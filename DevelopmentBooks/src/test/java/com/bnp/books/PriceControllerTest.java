@@ -1,5 +1,6 @@
 package com.bnp.books;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -18,8 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 public class PriceControllerTest {
 
 	private static final String JSON_PATH_EXPRESSION = "$.message";
-
 	private static final String API_V1_PRICE_QUOTES = "/api/v1/books/price-quotes";
+	private static final String USERNAME = "api-user";
+	private static final String PASSWORD = "secret";
 	
 	@Autowired
 	private MockMvc mockMvc;
@@ -162,9 +164,22 @@ public class PriceControllerTest {
 
         assertErrorMessage(invalidBookRequest, JSON_PATH_EXPRESSION, "Book price must be greater than zero for book: CLEAN_CODE");
     }
+	
+	@Test
+	@DisplayName("should return 401 when credentials are missing")
+	void shouldReturnUnauthorizedWhenNoCredentialsProvided() throws Exception {
+
+	    mockMvc.perform(
+	            post(API_V1_PRICE_QUOTES)
+	                    .contentType(MediaType.APPLICATION_JSON)
+	                    .content("[]")
+	    )
+	    .andExpect(status().isUnauthorized());
+	}
 
 	private void assertErrorMessage(String invalidBookRequest, String pathExpression, String message) throws Exception {
 		mockMvc.perform(post(API_V1_PRICE_QUOTES)
+						.with(httpBasic(USERNAME, PASSWORD))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidBookRequest))
                 .andExpect(status().isBadRequest())
@@ -172,7 +187,10 @@ public class PriceControllerTest {
 	}
 	
 	private void assertPrice(String requestBody, String price) throws Exception {
-		mockMvc.perform(post(API_V1_PRICE_QUOTES).contentType(MediaType.APPLICATION_JSON).content(requestBody))
+		mockMvc.perform(post(API_V1_PRICE_QUOTES)
+						.with(httpBasic(USERNAME, PASSWORD))
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(requestBody))
 				.andExpect(status().isOk()).andExpect(content().string(price));
 	}
 }

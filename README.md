@@ -36,7 +36,7 @@ http://localhost:8080
 ## API Usage
 #### Endpoint
 ```bash
-GET http://localhost:8080/api/v1/price
+POST http://localhost:8080/api/v1/books/price-quotes
 ```
 
 ## Request Body

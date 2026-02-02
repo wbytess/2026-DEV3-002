@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -12,42 +13,33 @@ import com.bnp.books.domain.model.Book;
 
 public class BookPriceCalculator {
 
-	private static final double DISCOUNT_5_PERCENT = 0.05;
-	private static final double DISCOUNT_10_PERCENT = 0.10;
-	private static final double DISCOUNT_20_PERCENT = 0.20;
-	private static final double DISCOUNT_25_PERCENT = 0.25;
+	private static final Map<Integer, Double> DISCOUNTS = Map.of(
+	        2, 0.05,
+	        3, 0.10,
+	        4, 0.20,
+	        5, 0.25
+	);
 
-	public double caluclatePriceFor(List<Book> books) {
-		double totalPrice = 0;
-		if (books.isEmpty()) {
-			return totalPrice = Double.valueOf(0);
-		}
+	public double calculatePriceFor(List<Book> books) {
+	    if (books == null || books.isEmpty()) {
+	        return 0.0;
+	    }
 
-		if (books.size() == 1) {
+	    return reArrangeBooksListToCalculateBestPrice(books).stream()
+	            .mapToDouble(this::calculateGroupPrice)
+	            .sum();
+	}
 
-			totalPrice = Double.valueOf(books.get(0).price());
-		}
+	private double calculateGroupPrice(List<Book> group) {
+	    int distinctCount = (int) group.stream()
+	            .map(Book::name)
+	            .distinct()
+	            .count();
 
-		else {
+	    double basePrice = calculateTotalPrice(group);
+	    double discount = DISCOUNTS.getOrDefault(distinctCount, 0.0);
 
-			List<List<Book>> groups = reArrangeBooksListToCalculateBestPrice(books);
-			for (List<Book> group : groups) {
-
-				List<Book> distinct = group.stream().distinct().collect(Collectors.toList());
-
-				double getBooksPriceForGroup = calculateTotalPrice(group);
-				double groupPrice = switch (distinct.size()) {
-				case 2 -> applyDiscount(getBooksPriceForGroup, DISCOUNT_5_PERCENT);
-				case 3 -> applyDiscount(getBooksPriceForGroup, DISCOUNT_10_PERCENT);
-				case 4 -> applyDiscount(getBooksPriceForGroup, DISCOUNT_20_PERCENT);
-				case 5 -> applyDiscount(getBooksPriceForGroup, DISCOUNT_25_PERCENT);
-				default -> getBooksPriceForGroup;
-				};
-			totalPrice += groupPrice; 
-			}
-		}
-
-		return totalPrice;
+	    return applyDiscount(basePrice, discount);
 	}
 
 	public List<List<Book>> reArrangeBooksListToCalculateBestPrice(List<Book> books) {

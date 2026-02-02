@@ -25,28 +25,28 @@ public class BooksPriceCalculatorTest {
 	void should_return_zero_when_basket_is_empty() {
 		List<Book> books = Collections.emptyList();
 
-		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(0);
+		assertThat(priceCalculator.calculatePriceFor(books)).isEqualTo(0);
 	}
 	
 	@Test
 	void should_return_base_price_for_single_book() {
 		List<Book> books = Collections.singletonList(new Book("CLEAN_CODE", PRICE_50));
 
-		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(50);
+		assertThat(priceCalculator.calculatePriceFor(books)).isEqualTo(50);
 	}
 	
 	@Test
 	void should_return_sum_of_price_for_2_similar_books() {
 		List<Book> books = List.of(new Book("CLEAN_CODE", PRICE_50), new Book("CLEAN_CODE", PRICE_50));
 
-		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(100.0);
+		assertThat(priceCalculator.calculatePriceFor(books)).isEqualTo(100.0);
 	}
 	
 	@Test
 	void should_return_price_with_5_percent_discount_for_2_differnt_books() {
 		List<Book> books = List.of(new Book("CLEAN_CODE", PRICE_50), new Book("CLEAN_CODER", PRICE_50));
 
-		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(95.0);
+		assertThat(priceCalculator.calculatePriceFor(books)).isEqualTo(95.0);
 	}
 	
 	@Test
@@ -54,7 +54,7 @@ public class BooksPriceCalculatorTest {
 		List<Book> books = List.of(new Book("CLEAN_CODE", PRICE_50), new Book("CLEAN_CODER", PRICE_50),
 				new Book("CLEAN_ARCHITECTURE", PRICE_50));
 
-		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(135);
+		assertThat(priceCalculator.calculatePriceFor(books)).isEqualTo(135);
 	}
 	
 	@Test
@@ -62,7 +62,7 @@ public class BooksPriceCalculatorTest {
 		List<Book> books = List.of(new Book("CLEAN_CODE", PRICE_50), new Book("CLEAN_CODER", PRICE_50),
 				new Book("CLEAN_ARCHITECTURE", PRICE_50), new Book("TDD_BY_EXAMPLE", PRICE_50));
 
-		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(160);
+		assertThat(priceCalculator.calculatePriceFor(books)).isEqualTo(160);
 	}
 	
 	@Test
@@ -70,7 +70,7 @@ public class BooksPriceCalculatorTest {
 		List<Book> books = List.of(new Book("CLEAN_CODE", PRICE_50), new Book("CLEAN_CODER", PRICE_50),
 				new Book("CLEAN_ARCHITECTURE", PRICE_50), new Book("TDD_BY_EXAMPLE", PRICE_50), new Book("LEGACY_CODE", PRICE_50));
 
-		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(187.50);
+		assertThat(priceCalculator.calculatePriceFor(books)).isEqualTo(187.50);
 	}
 	
 	@Test
@@ -82,7 +82,7 @@ public class BooksPriceCalculatorTest {
 				new Book("TDD_BY_EXAMPLE", PRICE_50), 
 				new Book("LEGACY_CODE", PRICE_50));
 
-		assertThat(priceCalculator.caluclatePriceFor(books)).isEqualTo(320);
+		assertThat(priceCalculator.calculatePriceFor(books)).isEqualTo(320);
 	}
 	
 	

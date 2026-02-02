@@ -34,7 +34,7 @@ public class PriceCalculatorServiceImpl implements PriceCalculatorService {
                 throw new IllegalArgumentException("Book price must be greater than zero for book: " + book.name());
             }
         });
-	    return bookPriceCalculator.caluclatePriceFor(books);
+	    return bookPriceCalculator.calculatePriceFor(books);
 	}
 
 }

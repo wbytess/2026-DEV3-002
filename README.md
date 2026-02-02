@@ -34,6 +34,10 @@ Application will start on:
 http://localhost:8080
 ```
 ## API Usage
+
+### Security
+The API is secured using HTTP Basic Authentication
+
 #### Endpoint
 ```bash
 POST http://localhost:8080/api/v1/books/price-quotes

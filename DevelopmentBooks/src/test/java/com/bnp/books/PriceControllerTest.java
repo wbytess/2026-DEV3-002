@@ -1,6 +1,6 @@
 package com.bnp.books;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,7 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public class PriceControllerTest {
 
-	private static final String API_V1_PRICE = "/api/v1/price";
+	private static final String JSON_PATH_EXPRESSION = "$.message";
+
+	private static final String API_V1_PRICE_QUOTES = "/api/v1/books/price-quotes";
 	
 	@Autowired
 	private MockMvc mockMvc;
@@ -117,13 +119,9 @@ public class PriceControllerTest {
 	@Test
 	@DisplayName("empty book list should return 400")
 	void emptyBookListReturnsBadRequest() throws Exception {
-	    String requestBody = "[]";
-
-	    mockMvc.perform(get("/api/v1/price")
-	                    .contentType(MediaType.APPLICATION_JSON)
-	                    .content(requestBody))
-	            .andExpect(status().isBadRequest())
-	            .andExpect(jsonPath("$.message").value("Book list cannot be empty"));
+	    String invalidBookRequest = "[]";
+	    
+	    assertErrorMessage(invalidBookRequest, JSON_PATH_EXPRESSION, "Book list cannot be empty");
 	}
 
 	@Test
@@ -136,11 +134,7 @@ public class PriceControllerTest {
                 ]
                 """;
 
-        mockMvc.perform(get("/api/v1/price")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidBookRequest))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Book price must not be null: CLEAN_CODE"));
+        assertErrorMessage(invalidBookRequest, JSON_PATH_EXPRESSION, "Book price must not be null: CLEAN_CODE");
     }
 	
 	@Test
@@ -152,12 +146,8 @@ public class PriceControllerTest {
                     { "name": null, "price": 50 }
                 ]
                 """;
-
-        mockMvc.perform(get("/api/v1/price")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidBookRequest))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Book name must not be null or empty"));
+        
+        assertErrorMessage(invalidBookRequest, JSON_PATH_EXPRESSION, "Book name must not be null or empty");
     }
 	
 	@Test
@@ -170,15 +160,19 @@ public class PriceControllerTest {
                 ]
                 """;
 
-        mockMvc.perform(get("/api/v1/price")
+        assertErrorMessage(invalidBookRequest, JSON_PATH_EXPRESSION, "Book price must be greater than zero for book: CLEAN_CODE");
+    }
+
+	private void assertErrorMessage(String invalidBookRequest, String pathExpression, String message) throws Exception {
+		mockMvc.perform(post(API_V1_PRICE_QUOTES)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidBookRequest))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Book price must be greater than zero for book: CLEAN_CODE"));
-    }
+                .andExpect(jsonPath(pathExpression).value(message));
+	}
 	
 	private void assertPrice(String requestBody, String price) throws Exception {
-		mockMvc.perform(get(API_V1_PRICE).contentType(MediaType.APPLICATION_JSON).content(requestBody))
+		mockMvc.perform(post(API_V1_PRICE_QUOTES).contentType(MediaType.APPLICATION_JSON).content(requestBody))
 				.andExpect(status().isOk()).andExpect(content().string(price));
 	}
 }
